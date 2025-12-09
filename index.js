@@ -31,8 +31,13 @@ app.use((req, res, next) => {
 
 dbConnection();
 
+app.use('/uploads', express.static('uploads'));
+
 
 app.use('/users', require('./routes/user'));
+app.use('/orders', require('./routes/order'));
+app.use('/admin/products', require('./routes/adminProduct'));
+app.use('/products',require('./routes/product'));
 
 app.listen(port, () => {
     console.log(`Server started on port ${port}`);

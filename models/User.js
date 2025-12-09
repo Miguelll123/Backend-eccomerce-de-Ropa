@@ -1,38 +1,37 @@
 
 const mongoose = require('mongoose');
 
-const UserSchema = new mongoose.Schema(
-    {
-
-       firstname: {
-        type:String,
-        required: [true, 'El nombre es oblogatorio']
-       },
-       lastname: {
-        type:String,
-        required:[true,'EL apellido es obligatorio']
-       },
-       email: {
-        type:String,
-        required: [true, 'El email es obligatorio']
-       },
-       password: {
-        type:String,
+const UserSchema = new mongoose.Schema({
+    firstname: {
+        type: String,
+        required: [true, 'El nombre es obligatorio']
+    },
+    lastname: {
+        type: String,
+        required: [true, 'El apellido es obligatorio']
+    },
+    email: {
+        type: String,
+        required: [true, 'El email es obligatorio'],
+        unique: true,
+        lowercase: true,
+        trim: true
+    },
+    password: {
+        type: String,
         required: [true, 'La contraseña es obligatoria']
-       },
-       confirmed: {
-            type: Boolean,
-            default: false,
-            },
-            token: [],
-            },
-            {
-                timestamps: true
-                
-            }
-)
-
-
+    },
+    confirmed: {
+        type: Boolean,
+        default: false
+    },
+    token: {
+        type: [String],
+        default: []
+    }
+}, {
+    timestamps: true
+});
 
 const User = mongoose.model('User', UserSchema);
 

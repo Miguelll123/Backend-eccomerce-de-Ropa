@@ -1,11 +1,14 @@
 {
-  "name": "eccomerce",
+  "name": "ecommerce",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "seed:categories": "node seeders/categorySeeder.js",
+    "seed:products": "node seeders/productSeeder.js",
+    "seed:all": "node seeders/runAllSeeders.js"
   },
   "keywords": [],
   "author": "",
@@ -16,7 +19,8 @@
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
-    "mongoose": "^9.0.0"
+    "mongoose": "^9.0.0",
+    "multer": "^2.0.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.0"
