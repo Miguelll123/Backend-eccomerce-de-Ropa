@@ -1,6 +1,7 @@
 
 // controllers/productController.js
 const Product = require('../models/Product');
+const Category = require('../models/Category');
 
 const productController = {
   async uploadImages(req, res) {
@@ -53,7 +54,53 @@ const productController = {
     } catch(error) {
         console.error('Error al obtener el producto por IdD', error)
     }
+  },
+
+  async getALL(req,res) {
+    try {
+    const products = await Product.find().select('images name price color')
+    res.send(products)
+    } catch(error) {
+        console.error('Error al obtener todos los productos',error)
+    }
+  },
+  async getProductsByName (req,res) {
+
+   try {
+    if(req.params.name.length>25){
+        return res.send({msg:'El nombre es demasiado largo'});
+    }
+   const name = new RegExp(req.params.name,'i');
+   const products = await Product.find({name}).select('images name price color');
+   res.send(products);
+
+   } catch(error) {
+    console.error('Error al obetner los productos por el nombre',error);
+   }
+
+  },
+  async getByCategory(req,res) {
+    try {
+    const {category,minPrice,maxPrice,color,name,size} = req.query;
+    const filter = {isActive:true};
+
+    if(category) filter.category=category;
+    if(minPrice || maxPrice) filter.price={};
+    if(minPrice) filter.price.$gte =Number(minPrice);
+    if(maxPrice) filter.price.$lte = Number(maxPrice);
+    if(color) filter.colors = color;
+    if(name) filter.name = new RegExp(name, 'i');
+    if(size) filter.sizes= size;
+
+    const Produtcs = await Product.find(filter).select('images name price colors');
+    res.send(Produtcs);
+    } catch(error) {
+        console.error('error al obtener los produtos por categoria',error)
+    }
   }
 };
+
+
+
 
 module.exports = productController;

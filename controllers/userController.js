@@ -110,10 +110,24 @@ const UserController = {
           error: error.message
         });
     }
- }
-
-
-
+ },
+    async logout (req,res) {
+      try {
+      if(!req.user) {
+        return res.statsu(404).send({msg:"No estas autorizado"});
+      }
+      const token = req.headers.authorization?.replace('Bearer','');
+       if(!token) {
+        return res.status(404).send({msg:"Token no proporcionado"})
+       }
+      await User.findByIdAndUpdate(req.user._id,{$pull:{tokens:token}},{new:true});
+      res.send({msg:"usuario desconectado con exito"});
+      } catch(error) {
+        console.error(error)
+          res.status(500).send({msg:"Hubo un problema ",error:error.message});
+        
+      }
+    }
 
 }
 
